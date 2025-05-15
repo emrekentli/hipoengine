@@ -103,8 +103,7 @@ func (e *Engine) renderInternal(template string, context map[string]interface{},
 			for _, m := range blockMatches {
 				blocks[m[1]] = m[2]
 			}
-			baseTpl := baseContent
-			baseTpl = blockRe.ReplaceAllStringFunc(baseTpl, func(match string) string {
+			baseTpl := blockRe.ReplaceAllStringFunc(baseContent, func(match string) string {
 				bm := blockRe.FindStringSubmatch(match)
 				if val, ok := blocks[bm[1]]; ok {
 					return val
