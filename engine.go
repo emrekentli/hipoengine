@@ -77,6 +77,9 @@ var (
 	extendsRe = regexp.MustCompile(`{%-?\s*extends\s+"([^"]+)"\s*-?%}`)
 )
 
+// --- Block/Extends işleyişi ---
+// Eğer bir template extends kullanıyorsa, child template'teki block'lar base template'teki block'ların yerini alır.
+// Block'lar birden fazla seviyede override edilebilir ve whitespace/satır başı/sonu karakterleri esnek şekilde işlenir.
 func (e *Engine) renderInternal(template string, context map[string]interface{}, parentRawBlocks map[string]string) (string, error) {
 	template = commentRe.ReplaceAllString(template, "")
 
@@ -98,11 +101,13 @@ func (e *Engine) renderInternal(template string, context map[string]interface{},
 		baseFile := extendsMatch[1]
 		baseContent, err := e.ParseFile(baseFile)
 		if err == nil {
+			// Child template'teki block'ları topla
 			blocks := map[string]string{}
 			blockMatches := blockRe.FindAllStringSubmatch(template, -1)
 			for _, m := range blockMatches {
 				blocks[m[1]] = m[2]
 			}
+			// Base template'teki block'ları child'dan gelenlerle değiştir
 			baseTpl := blockRe.ReplaceAllStringFunc(baseContent, func(match string) string {
 				bm := blockRe.FindStringSubmatch(match)
 				if val, ok := blocks[bm[1]]; ok {
@@ -110,6 +115,7 @@ func (e *Engine) renderInternal(template string, context map[string]interface{},
 				}
 				return bm[2]
 			})
+			// Eğer baseTpl de extends içeriyorsa, recursive olarak işlenir
 			return e.renderInternal(baseTpl, context, rawBlocks)
 		}
 	}
@@ -235,6 +241,9 @@ func (e *Engine) renderInternal(template string, context map[string]interface{},
 
 	return result.String(), nil
 }
+
+// --- Block/Extends işleyişi sonu --
+// --- Block/Extends işleyişi sonu ---
 
 // --- Basit koşul değerlendirme ---
 func evalCondition(expr string, context map[string]interface{}) bool {
