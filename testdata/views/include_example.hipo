@@ -1,0 +1,6 @@
+<template>
+--- Include Başladı ---
+Kapsanan kullanıcı: {{ user.name | upper }}
+Uzunluk: {{ user.name | length }}
+--- Include Bitti ---
+</template> 

@@ -1,0 +1,6 @@
+{
+  "welcome": "Hoşgeldiniz!",
+  "bye": "Güle güle!",
+  "user": "Kullanıcı",
+  "greeting": "Merhaba, {{ name }}!"
+} 

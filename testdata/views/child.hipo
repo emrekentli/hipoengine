@@ -1,0 +1,38 @@
+<template>
+{{ block title }}Tüm Özellikler Testi{{ endblock }}
+{{ block content }}
+Hoşgeldin {{ user.name | upper }}!
+
+<!-- Fonksiyon çağrısı -->
+Fonksiyon: {{ GetX().name | title }}
+
+<!-- Fonksiyon ve filtre zinciri -->
+Fonksiyon + filtre: {{ GetX().name | upper | exclaim }}
+
+<!-- For döngüsü -->
+Ürünler:
+{{ for urun in GetProduct() }}- {{ urun.name | reverse }}: {{ urun.price }}
+{{ endfor }}
+
+{{ for cat in getCategories() }}
+{{cat.strCategory}}
+{{ endfor }}
+
+<!-- If/elif/else -->
+{{ if user.age >= 18 }}Yetişkin{{ elif user.age >= 13 }}Ergen{{ else }}Çocuk{{ endif }}
+
+<!-- With bloğu -->
+{{ with GetX() as kisi }} Kişi adı: {{ kisi.name | lower }}{{ endwith }}
+
+<!-- Filtreler -->
+Uzunluk: {{ user.name | length }}
+Ters: {{ user.name | reverse }}
+Trim: {{ "   bosluklu   " | trim }}
+Başlık: {{ user.name | title }}
+Küçük: {{ user.name | lower }}
+Büyük: {{ user.name | upper }}
+
+<!-- Include örneği -->
+{{ include "testdata/views/include_example.hipo" }}
+{{ endblock }}
+</template>

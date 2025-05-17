@@ -1,0 +1,19 @@
+<template>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <title>
+    {{ block title }}
+    Varsayılan Başlık
+    {{ endblock }}
+    </title>
+</head>
+<body>
+  <main>
+    {{ block content }}
+    Varsayılan İçerik
+    {{ endblock }}
+  </main>
+</body>
+</html>
+</template>
